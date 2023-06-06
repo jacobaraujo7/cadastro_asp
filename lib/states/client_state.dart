@@ -1,6 +1,6 @@
 import 'package:cadastro_asp/entities/client_entity.dart';
 
-sealed class ClientState {
+abstract class ClientState {
   const ClientState();
 }
 

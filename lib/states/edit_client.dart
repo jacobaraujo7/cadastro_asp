@@ -1,4 +1,4 @@
-sealed class ClientEditState {
+abstract class ClientEditState {
   const ClientEditState();
 }
 

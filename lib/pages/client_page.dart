@@ -28,15 +28,20 @@ class _ClientPageState extends State<ClientPage> {
       appBar: AppBar(
         title: const Text('Clients'),
       ),
-      body: ListenableBuilder(
-        listenable: clientState,
+      body: AnimatedBuilder(
+        animation: clientState,
         builder: (context, child) {
-          return switch (clientState.value) {
-            StartClientState _ => const SizedBox(),
-            LoadingClientState _ => const Center(child: CircularProgressIndicator()),
-            GettedClientState state => _gettedClients(state),
-            FailureClientState state => _failure(state),
-          };
+          final state = clientState.value;
+          if(state is StartClientState){
+            return const SizedBox();
+          }else if(state is LoadingClientState){
+            return const Center(child: CircularProgressIndicator());
+          }else if (state is GettedClientState){
+            return _gettedClients(state);
+          }else if(state is FailureClientState ){
+            return _failure(state);
+          }
+          return Container();
         },
       ),
       floatingActionButton: FloatingActionButton(
