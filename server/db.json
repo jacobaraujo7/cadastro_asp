@@ -1,0 +1,22 @@
+{
+  "clients": [
+    {
+      "id": "vdfgsfdhsrthsdhsr",
+      "name": "Flutterando 3 LTDA",
+      "email": "contato@flutterando.com.br",
+      "details": "fsdfsdfsfsd"
+    },
+    {
+      "id": "gdfgyjfjfuyt",
+      "name": "FTeam",
+      "email": "contato@fteam.dev",
+      "details": ""
+    },
+    {
+      "id": "dsfggsdfgyrjuluiiyui",
+      "name": "Masterclass",
+      "email": "masterclass@flutterando.com.br",
+      "details": ""
+    }
+  ]
+}
