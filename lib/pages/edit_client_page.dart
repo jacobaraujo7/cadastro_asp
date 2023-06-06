@@ -9,6 +9,7 @@ import '../widgets/text_input.dart';
 
 class EditClient extends StatefulWidget {
   final ClientEntity? entity;
+
   const EditClient({
     super.key,
     this.entity,
@@ -37,12 +38,16 @@ class _EditClientState extends State<EditClient> {
 
   _listener() {
     setState(() {});
-    return switch (editClientState.value) {
-      StartEditClientState state => state,
-      SavedClientState _ => Navigator.of(context).pop(),
-      LoadingEditClientState state => state,
-      FailureEditClientState state => _showSnackError(state),
-    };
+    final state = editClientState.value;
+    if (state is StartEditClientState) {
+      state;
+    } else if (state is SavedClientState) {
+      Navigator.of(context).pop();
+    } else if (state is LoadingEditClientState) {
+      state;
+    } else if (state is FailureEditClientState) {
+      _showSnackError(state);
+    }
   }
 
   @override

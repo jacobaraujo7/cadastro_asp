@@ -1,6 +1,6 @@
 part of 'client_dto.dart';
 
-mixin class ClientValidate {
+mixin ClientValidate {
   void nameValidate(String name) {
     if (name.isEmpty) {
       throw 'O nome não pode ser vazio'.asException();
