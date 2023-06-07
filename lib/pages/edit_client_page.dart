@@ -1,3 +1,4 @@
+import 'package:asp/asp.dart';
 import 'package:cadastro_asp/adapters/client_adapter.dart';
 import 'package:cadastro_asp/states/edit_client.dart';
 import 'package:flutter/material.dart';
@@ -32,23 +33,6 @@ class _EditClientState extends State<EditClient> {
       dto = ClientDTO();
     }
     editClientState.value = const StartEditClientState();
-    editClientState.addListener(_listener);
-  }
-
-  _listener() {
-    setState(() {});
-    return switch (editClientState.value) {
-      StartEditClientState state => state,
-      SavedClientState _ => Navigator.of(context).pop(),
-      LoadingEditClientState state => state,
-      FailureEditClientState state => _showSnackError(state),
-    };
-  }
-
-  @override
-  void dispose() {
-    editClientState.removeListener(_listener);
-    super.dispose();
   }
 
   void _showSnackError(FailureEditClientState state) {
@@ -79,10 +63,23 @@ class _EditClientState extends State<EditClient> {
     setState(() => dto = ClientDTO(id: dto.id));
   }
 
+  bool _setStateFilter() {
+    return editClientState.value is! SavedClientState //
+        ||
+        editClientState.value is! FailureEditClientState;
+  }
+
   @override
   Widget build(BuildContext context) {
-    final state = editClientState.value;
+    context.callback(() => editClientState.value, (value) {
+      if (value is SavedClientState) {
+        Navigator.of(context).pop();
+      } else if (value is FailureEditClientState) {
+        _showSnackError(value);
+      }
+    });
 
+    final state = context.select(() => editClientState.value, filter: _setStateFilter);
     final enabled = state is! LoadingEditClientState;
 
     return Scaffold(

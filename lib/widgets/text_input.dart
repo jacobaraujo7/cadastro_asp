@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:result_dart/result_dart.dart';
 
 import '../exceptions/validate_exception.dart';
 
 class TextInput extends StatelessWidget {
   final String? initialValue;
-  final void Function(String value)? validator;
+  final Result<Unit, AppException> Function(String value)? validator;
   final String? hint;
   final bool enabled;
   final void Function(String value)? onChanged;
@@ -30,12 +31,12 @@ class TextInput extends StatelessWidget {
         hintText: hint,
       ),
       validator: (name) {
-        try {
-          validator?.call(name ?? '');
-          return null;
-        } on ValidateException catch (e) {
-          return e.message;
-        }
+        return validator
+            ?.call(name ?? '') //
+            .fold(
+              (success) => null,
+              (failure) => failure.message,
+            );
       },
     );
   }

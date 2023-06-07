@@ -1,8 +1,8 @@
-import 'dart:io';
-
+import 'package:asp/asp.dart';
 import 'package:cadastro_asp/pages/client_page.dart';
 import 'package:cadastro_asp/pages/edit_client_page.dart';
 import 'package:flutter/material.dart';
+import 'package:uno/uno.dart';
 
 import 'entities/client_entity.dart';
 import 'reducers/client_reducer.dart';
@@ -10,38 +10,13 @@ import 'services/client_service.dart';
 import 'services/http_client_service.dart';
 
 void main() {
-  runApp(const RootWidget());
-}
-
-class RootWidget extends StatefulWidget {
-  const RootWidget({super.key});
-
-  @override
-  State<RootWidget> createState() => _RootWidgetState();
-}
-
-class _RootWidgetState extends State<RootWidget> {
-  final httpClient = HttpClient();
-  late final httpClientService = HttpClientService(httpClient);
-  late final clientService = ClientService(httpClientService);
-  late final reducer;
-
-  @override
-  void initState() {
-    super.initState();
-    reducer = ClientReducer(clientService);
-  }
-
-  @override
-  void dispose() {
-    reducer.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const MainApp();
-  }
+  final uno = Uno();
+  final httpClientService = HttpClientService(uno);
+  final clientService = ClientService(httpClientService);
+  final reducer = ClientReducer(clientService);
+  runApp(
+    RxRoot(reducers: [reducer], child: const MainApp()),
+  );
 }
 
 class MainApp extends StatelessWidget {

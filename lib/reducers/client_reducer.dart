@@ -1,17 +1,18 @@
+import 'package:asp/asp.dart';
 import 'package:cadastro_asp/states/client_state.dart';
 
 import '../atoms/client_atom.dart';
 import '../services/client_service.dart';
 import '../states/edit_client.dart';
 
-class ClientReducer {
+class ClientReducer extends Reducer {
   final ClientService service;
 
   ClientReducer(this.service) {
-    fetchClientsAction.addListener(_fetchClient);
-    createClientAction.addListener(_createClient);
-    updateClientAction.addListener(_updateClient);
-    deleteClientAction.addListener(_deleteClient);
+    on(() => [fetchClientsAction], _fetchClient);
+    on(() => [createClientAction], _createClient);
+    on(() => [updateClientAction], _updateClient);
+    on(() => [deleteClientAction], _deleteClient);
   }
 
   void _fetchClient() async {
@@ -58,12 +59,5 @@ class ClientReducer {
     } catch (e) {
       clientState.value = FailureClientState(e.toString());
     }
-  }
-
-  void dispose() {
-    fetchClientsAction.removeListener(_fetchClient);
-    createClientAction.removeListener(_createClient);
-    updateClientAction.removeListener(_updateClient);
-    deleteClientAction.removeListener(_deleteClient);
   }
 }

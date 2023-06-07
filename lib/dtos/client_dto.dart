@@ -1,5 +1,7 @@
 import 'package:cadastro_asp/dtos/dto.dart';
 import 'package:cadastro_asp/exceptions/validate_exception.dart';
+import 'package:result_dart/result_dart.dart';
+import 'package:string_validator/string_validator.dart' as validator;
 
 import '../services/string_generator.dart';
 
@@ -30,8 +32,9 @@ class ClientDTO extends DTO with ClientValidate {
   }
 
   @override
-  void validate() {
-    nameValidate(name);
-    emailValidate(email);
+  Result<Unit, AppException> validate() {
+    return nameValidate(name) //
+        .pure(email)
+        .flatMap(emailValidate);
   }
 }

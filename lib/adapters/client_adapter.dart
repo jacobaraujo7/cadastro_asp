@@ -1,16 +1,14 @@
+import 'package:dson_adapter/dson_adapter.dart';
+
 import '../dtos/client_dto.dart';
 import '../entities/client_entity.dart';
 
 class ClientAdapter {
+  static const dson = DSON();
   ClientAdapter._();
 
   static ClientEntity fromMap(dynamic map) {
-    return ClientEntity(
-      id: map['id'] ?? '',
-      name: map['name'] ?? '',
-      email: map['email'] ?? '',
-      details: map['details'],
-    );
+    return dson.fromJson(map, ClientEntity.new);
   }
 
   static ClientDTO entityToDTO(ClientEntity model) {

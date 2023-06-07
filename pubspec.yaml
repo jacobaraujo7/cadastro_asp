@@ -7,8 +7,15 @@ environment:
   sdk: '>=3.0.2 <4.0.0'
 
 dependencies:
+  asp: ^1.0.3
+  uno: ^1.1.8
+  equatable: ^2.0.5
+  string_validator: ^1.0.0
+  dson_adapter: ^1.2.0+2
+  result_dart: ^1.0.6
   flutter:
     sdk: flutter
+
 
 dev_dependencies:
   flutter_test:

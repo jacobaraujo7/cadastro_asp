@@ -1,3 +1,4 @@
+import 'package:asp/asp.dart';
 import 'package:cadastro_asp/states/client_state.dart';
 import 'package:flutter/material.dart';
 
@@ -18,27 +19,26 @@ class _ClientPageState extends State<ClientPage> {
     clientState.value = const StartClientState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      fetchClientsAction.value = Object();
+      fetchClientsAction();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final state = context.select(() => clientState.value);
+
+    final body = switch (state) {
+      StartClientState _ => const SizedBox(),
+      LoadingClientState _ => const Center(child: CircularProgressIndicator()),
+      GettedClientState state => _gettedClients(state),
+      FailureClientState state => _failure(state),
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clients'),
       ),
-      body: ListenableBuilder(
-        listenable: clientState,
-        builder: (context, child) {
-          return switch (clientState.value) {
-            StartClientState _ => const SizedBox(),
-            LoadingClientState _ => const Center(child: CircularProgressIndicator()),
-            GettedClientState state => _gettedClients(state),
-            FailureClientState state => _failure(state),
-          };
-        },
-      ),
+      body: body,
       floatingActionButton: FloatingActionButton(
         onPressed: _createNewClient,
         child: const Icon(Icons.add),
@@ -73,7 +73,7 @@ class _ClientPageState extends State<ClientPage> {
     return Center(
       child: ElevatedButton(
         onPressed: () {
-          fetchClientsAction.value = Object();
+          fetchClientsAction();
         },
         child: Text(state.message),
       ),

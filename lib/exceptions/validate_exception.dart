@@ -1,10 +1,14 @@
-class ValidateException implements Exception {
+class AppException implements Exception {
   final String message;
   late StackTrace stackTrace;
 
-  ValidateException(this.message, [StackTrace? stackTrace]) {
+  AppException(this.message, [StackTrace? stackTrace]) {
     this.stackTrace = stackTrace ?? StackTrace.current;
   }
+}
+
+class ValidateException extends AppException {
+  ValidateException(super.message);
 }
 
 extension ValidateExceptionExtension on String {
